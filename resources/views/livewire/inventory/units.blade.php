@@ -33,9 +33,9 @@
                             <td>{{$unit->description ?? "N/A"}}</td>
                             <td>
                                 @if ($unit->is_active == 1 )
-                                    <span class="text-green-500 text-sm rounded-2xl bg-green-200 px-2 py-1 font-semibold">Active</span>
-                                    @else
-                                    <span class="text-red-500 text-sm rounded-2xl bg-red-200 px-2 py-1 font-semibold">InActive</span>
+                                <span class="text-green-500 text-sm rounded-2xl bg-green-200 px-2 py-1 font-semibold">Active</span>
+                                @else
+                                <span class="text-red-500 text-sm rounded-2xl bg-red-200 px-2 py-1 font-semibold">InActive</span>
                                 @endif
                             </td>
                             <td>
@@ -58,7 +58,11 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
+                    @if($this->unit)
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Unit</h1>
+                    @else
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Add Unit</h1>
+                    @endif
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-24">

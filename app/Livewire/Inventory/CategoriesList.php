@@ -26,6 +26,7 @@ class CategoriesList extends Component
         $this->name = '';
         $this->description = '';
         $this->is_active = true;
+        $this->category = null;
         $this->resetErrorBag();
     }
 

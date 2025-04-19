@@ -9,3 +9,8 @@ Route::prefix('inventory')->group(function () {
     Route::get('/products', \App\Livewire\Inventory\ProductsList::class)->name('inventory.products.list');
     Route::get('/categories', \App\Livewire\Inventory\CategoriesList::class)->name('categories.units.list');
 });
+Route::prefix('purchase')->group(function () {
+    Route::get('/suppliers', \App\Livewire\Purchase\SupplierList::class)->name('purchase.supplier.list');
+
+});
+

@@ -27,6 +27,7 @@ class Units extends Component
         $this->short_form = '';
         $this->description = '';
         $this->is_active = true;
+        $this->unit = null;
         $this->resetErrorBag();
     }
     public function save()

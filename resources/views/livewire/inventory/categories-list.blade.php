@@ -56,7 +56,12 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
+                    @if ($this->category)
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Category</h1>
+                    @else
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Add Category</h1>
+
+                    @endif
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-24">
@@ -64,6 +69,9 @@
                         <div class="col-12 mb-6">
                             <label for="name" class="col-form-label">Name <span class="text-red-500">*</span></label>
                             <input type="text" class="form-control" id="name" placeholder="Enter Category Name" wire:model="name">
+                            @error('name')
+                            <span class="text-red-500 text-xs">{{$message}}</span>
+                            @enderror
                         </div>
 
                         <div class="col-12 mb-6">
