@@ -2,7 +2,7 @@
     <div class="col-md-12 mt-2 p-2">
         <div class="mb-4 p-2">
             <div class="card-header mb-4 border-b-0 p-0">
-                <span class="card-title text-2xl font-semibold"> Categories</span>
+                <span class="card-title text-2xl font-semibold"> Suppliers</span>
             </div>
             <div class="card mb-2 shadow-none">
                 <div class="flex justify-between gap-3 p-2">
@@ -65,8 +65,11 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-
+                    @if ($this->supplier)
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Supplier</h1>
+                    @else
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Add Supplier</h1>
+                    @endif
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-24">

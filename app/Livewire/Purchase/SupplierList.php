@@ -8,7 +8,7 @@ use Livewire\Component;
 class SupplierList extends Component
 {
     public $name, $email, $phone, $tax_number, $opening_balance, $address, $is_active = true;
-    public $suppliers,$supplier;
+    public $suppliers, $supplier;
     public function render()
     {
         $this->suppliers = Supplier::latest()->get();
@@ -24,6 +24,7 @@ class SupplierList extends Component
         $this->opening_balance = '';
         $this->address = '';
         $this->is_active = true;
+        $this->supplier = null;
     }
     public function save()
     {
@@ -31,7 +32,12 @@ class SupplierList extends Component
             "name" => "required",
             "phone" => "required",
         ]);
-        $supplier = new Supplier();
+
+        if ($this->supplier) {
+            $supplier = $this->supplier;
+        } else {
+            $supplier = new Supplier();
+        }
         $supplier->name = $this->name;
         $supplier->email = $this->email;
         $supplier->phone = $this->phone;
@@ -49,8 +55,9 @@ class SupplierList extends Component
         $this->dispatch('closemodal');
     }
 
-    public function delete($id) {
-       
+    public function delete($id)
+    {
+
         $supplier = Supplier::whereId($id)->first();
         if (!$supplier) {
             return;
@@ -72,8 +79,6 @@ class SupplierList extends Component
         $this->tax_number = $this->supplier->tax_number;
         $this->opening_balance = $this->supplier->opening_balance;
         $this->address = $this->supplier->address;
-        $this->is_active = $this->product->is_active == 1 ? true : false;
+        $this->is_active = $this->supplier->is_active == 1 ? true : false;
     }
-
-
 }

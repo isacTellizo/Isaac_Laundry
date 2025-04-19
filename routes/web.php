@@ -11,6 +11,8 @@ Route::prefix('inventory')->group(function () {
 });
 Route::prefix('purchase')->group(function () {
     Route::get('/suppliers', \App\Livewire\Purchase\SupplierList::class)->name('purchase.supplier.list');
+    Route::get('/', \App\Livewire\Purchase\PurchaseList::class)->name('purchase.list');
+    Route::get('/purchase-manage', \App\Livewire\Purchase\PurchaseManage::class)->name('purchase.manage');
 
 });
 

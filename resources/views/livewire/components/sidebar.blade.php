@@ -34,8 +34,8 @@
                         <li class="nav-item"> <a href="{{route('purchase.supplier.list')}}" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
                                 <p>Suppliers</p>
                             </a> </li>
-                        <li class="nav-item"> <a href="./layout/fixed-sidebar.html" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
-                                <p>Fixed Sidebar</p>
+                        <li class="nav-item"> <a href="{{route('purchase.list')}}" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
+                                <p>Purchase</p>
                             </a> </li>
                         <li class="nav-item"> <a href="./layout/layout-custom-area.html" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
                                 <p>Layout <small>+ Custom Area </small></p>
