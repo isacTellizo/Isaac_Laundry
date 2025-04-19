@@ -2,7 +2,7 @@
     <div class="col-md-12 mt-2 p-2">
         <div class="mb-4 p-2">
             <div class="card-header mb-4 border-b-0 p-0">
-                <span class="card-title text-2xl font-semibold"> Units List</span>
+                <span class="card-title text-2xl font-semibold"> Units </span>
             </div> <!-- /.card-header -->
             <div class="card mb-2 shadow-none">
                 <div class="flex justify-between gap-3 p-2">
@@ -40,8 +40,8 @@
                             </td>
                             <td>
                                 <div class="flex justify-between gap-2">
-                                    <button class="btn btn-dark text-xs" data-bs-toggle="modal" data-bs-target="#unitModal" wire:click="edit({{$unit->id}})">Edit</button>
-                                    <button class="btn btn-danger text-sm" wire:click.prevent="delete({{$unit->id}})">Delete</button>
+                                    <button class="btn btn-dark btn-sm text-xs" data-bs-toggle="modal" data-bs-target="#unitModal" wire:click="edit({{$unit->id}})">Edit</button>
+                                    <button class="btn btn-danger btn-sm text-xs" wire:click.prevent="delete({{$unit->id}})">Delete</button>
                                 </div>
                             </td>
                         </tr>
@@ -58,7 +58,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add Product</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add Unit</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-24">
