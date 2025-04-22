@@ -40,7 +40,7 @@
                             <td>{{$product->opening_stock}}</td>
                             <td>{{$product->description}}</td>
                             <td>
-                                @if ($product->status == 1)
+                                @if ($product->is_active == 1)
                                 <span class="text-green-500 text-sm rounded-2xl bg-green-200 px-2 py-1 font-semibold">Active</span>
                                 @else
                                 <span class="text-red-500 text-sm rounded-2xl bg-red-200 px-2 py-1 font-semibold">InActive</span>

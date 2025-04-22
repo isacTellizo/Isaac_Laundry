@@ -13,6 +13,17 @@ return new class extends Migration
     {
         Schema::create('purchase_details', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('purchase_id');
+            $table->integer('type');
+            $table->double('quantity', 20, 3);
+            $table->unsignedBigInteger('product_id');
+            $table->string('product_name');
+            $table->double('rate', 20, 3);
+            $table->double('purchase_price', 20, 3);
+            $table->double('total', 20, 3);
+            $table->double('discount', 20, 3)->nullable();
+            $table->double('tax_percentage', 20, 3)->nullable();
+            $table->double('tax_amount', 20, 3)->nullable();
             $table->timestamps();
         });
     }

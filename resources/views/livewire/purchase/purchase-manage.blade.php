@@ -3,12 +3,30 @@
         <div class="flex flex-col justify-between gap-3">
             <div class="">
                 <div class="card-body flex flex-col gap-4">
+                    @error('selected_products')
+                    <span class="text-red-500 text-sm">{{"At least one product selection is required."}}</span>
+                    @enderror
                     <div class="flex items-center justify-between">
+
                         <div class="flex items-center gap-3">
-                            <input type="text"
-                                class="p-2.5 !rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-100 placeholder:text-sm placeholder-gray-500"
-                                placeholder="Search products...">
-                            <button class="bg-gray-100 hover:bg-gray-300 p-2 !rounded-md text-blue-600 shadow-sm transition-all">
+                            <div class="flex flex-col gap-2 relative  ">
+                                <input type="text" wire:model.live="supplier_query"
+                                    class="p-2.5 !rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-100 placeholder:text-sm placeholder-gray-500"
+                                    placeholder="@if (!$selected_supplier) Select Supplier @else {{ $selected_supplier->name }} @endif">
+                                @if ($suppliers && count($suppliers) > 0)
+                                <div
+                                    class="absolute top-[100%] left-0 w-full z-20 shadow-md bg-white rounded-lg">
+                                    @foreach ($suppliers as $row)
+                                    <li class="w-full dropdown-item !bg-gray-100  cursor-pointer px-2  py-2 !rounded-md text-secondary-light bg-hover-neutral-200 text-hover-neutral-900"
+                                        wire:click="selectSupplier({{ $row->id }})">{{ $row->name }}
+
+                                    </li>
+                                    @endforeach
+                                </div>
+                                @endif
+                            </div>
+
+                            <button class="bg-gray-100 hover:bg-gray-300 p-2 !rounded-md text-[#157347] shadow-sm transition-all" data-bs-toggle="modal" data-bs-target="#supplierModal" wire:click.prevent="resetFields">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
                                     viewBox="0 0 24 24">
                                     <g fill="none">
@@ -22,28 +40,54 @@
                         </div>
                         <div class="flex items-center gap-3">
                             <button class="bg-gray-200 hover:bg-gray-300 px-3 py-1.5 !rounded-md text-sm font-medium">Clear</button>
-                            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 !rounded-md text-sm font-semibold focus:ring-2 focus:ring-blue-200">Save</button>
+                            <button wire:click.prevent="save" class="bg-[#157347] hover:bg-[#274738] text-white px-4 py-1.5 !rounded-md text-sm font-semibold focus:ring-2 focus:ring-blue-200">Save</button>
                         </div>
                     </div>
+                    @error('supplier_query')
+                    <div class=" tw-px-3">
+                        <span class="tw-text-red-500 tw-text-xs">{{ $message }}</span>
+                    </div>
+                    @enderror
 
                     <div class="flex items-center justify-between gap-3">
                         <div class="flex items-center gap-3">
-                            <input type="text"
-                                class="p-2.5 !rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-100 placeholder:text-sm"
-                                placeholder="#Invoice No.">
-                            <input type="date"
-                                class="p-2.5 !rounded-md border border-gray-300 text-gray-500 focus:outline-none">
+                            <div class="flex flex-col">
+                                <input type="text" wire:model="invoice_number"
+                                    class="p-2.5 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-100 placeholder:text-sm"
+                                    placeholder="#Invoice No.">
+                                @error('invoice_number')
+                                <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="flex flex-col">
+                                <input type="date" wire:model="invoice_date"
+                                    class="p-2.5 rounded-md border border-gray-300 text-gray-500 focus:outline-none">
+                                @error('invoice_date')
+                                <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                                @enderror
+                            </div>
                         </div>
+
                         <div class="flex items-center gap-2 text-sm">
-                            <button class="bg-gray-100  px-3 py-1 !rounded-md">3</button>
-                            <button class="bg-gray-100  px-3 py-1 !rounded-md">2025-10-14</button>
+                            <input class="bg-gray-100   px-3 py-1 w-10 outline-none  !rounded-md" value="{{$purchase_number}}" readonly />
+                            <input class="bg-gray-100  px-3 py-1 w-28 outline-none  !rounded-md" wire:model="purchase_date" readonly />
                         </div>
                     </div>
 
-                    <div class="mt-1">
-                        <input type="text"
+                    <div class="mt-1 relative">
+                        <input type="text" wire:model.live="product_query"
                             class="p-2.5 !rounded-md border border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-100 placeholder:text-sm"
-                            placeholder="Customer Name / Code">
+                            placeholder="Search Products">
+                        @if ($products && count($products) > 0)
+                        <div
+                            class="absolute top-[100%] left-0 w-full z-20 shadow-md bg-white rounded-lg">
+                            @foreach ($products as $row)
+                            <li class="w-full dropdown-item !bg-gray-100  cursor-pointer px-2  py-2 !rounded-md text-secondary-light bg-hover-neutral-200 text-hover-neutral-900"
+                                wire:click="selectProduct({{ $row->id }})">{{ $row->name }}
+                            </li>
+                            @endforeach
+                        </div>
+                        @endif
                     </div>
                 </div>
 
@@ -63,20 +107,22 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @if ($selected_products && count($selected_products)>0)
+
+                                @foreach ($selected_products as $index => $product )
                                 <tr class="border-t">
-                                    <td class="p-2"></td>
-                                    <td class="p-2"></td>
-                                    <td class="p-2"><input type="number"
+                                    <td class="p-2">{{$loop->index+1}}</td>
+                                    <td class="p-2">{{$product['name']}}</td>
+                                    <td class="p-2"><input type="number" wire:model.lazy="selected_products.{{ $index }}.quantity"
                                             class="w-full text-center p-1 border !rounded-md border-gray-300 focus:ring focus:ring-blue-100"></td>
-                                    <td class="p-2"><input type="number"
+                                    <td class="p-2"><input type="number" wire:model.lazy="selected_products.{{ $index }}.rate"
                                             class="w-full text-center p-1 border !rounded-md border-gray-300 focus:ring focus:ring-blue-100"></td>
-                                    <td class="p-2"><input type="number"
+                                    <td class="p-2"><input type="number" wire:model.lazy="selected_products.{{ $index }}.discount"
                                             class="w-full text-center p-1 border !rounded-md border-gray-300 focus:ring focus:ring-blue-100"></td>
-                                    <td class="text-center"></td>
-                                    <td class="p-2"><input type="number"
-                                            class="w-full text-center p-1 border !rounded-md border-gray-300 focus:ring focus:ring-blue-100"></td>
+                                    <td class="text-center">{{$product['tax']}}</td>
+                                    <td class="p-2">{{$product['total']}}</td>
                                     <td class="text-center">
-                                        <button class="bg-red-100 hover:bg-red-300 p-2 !rounded-full text-red-600">
+                                        <button wire:click.prevent="removeProduct({{$index}})" class="bg-red-100 hover:bg-red-300 p-2 !rounded-full text-red-600">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4"
                                                 viewBox="0 0 24 24">
                                                 <path fill="currentColor"
@@ -85,6 +131,8 @@
                                         </button>
                                     </td>
                                 </tr>
+                                @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -96,13 +144,13 @@
                     <div class="flex items-center gap-4">
                         <div class="flex flex-col gap-1 w-1/2">
                             <label class="text-sm font-semibold">Paid Amount <span class="text-red-500">*</span></label>
-                            <input type="text"
+                            <input type="text" wire:model="paid_amount"
                                 class="p-2 !rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-100"
                                 placeholder="Amount">
                         </div>
                         <div class="flex flex-col gap-1 w-1/2">
                             <label class="text-sm font-semibold">Payment Method <span class="text-red-500">*</span></label>
-                            <select
+                            <select wire:model="payment_method"
                                 class="p-2 !rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-100">
                                 <option value="">Select Method</option>
                                 <option value="1">Cash</option>
@@ -116,13 +164,13 @@
                     <div class="flex items-center gap-4">
                         <div class="flex flex-col gap-1 w-1/2">
                             <label class="text-sm font-semibold">Note/Remark</label>
-                            <textarea
+                            <textarea wire:model="notes"
                                 class="px-3 py-2 !rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-100 resize-none"
                                 placeholder="Write a note..."></textarea>
                         </div>
                         <div class="flex flex-col gap-1 w-1/2">
                             <label class="text-sm font-semibold">Payment Remark</label>
-                            <textarea
+                            <textarea wire:model="remarks"
                                 class="px-3 py-2 !rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-100 resize-none"
                                 placeholder="Add any payment remarks"></textarea>
                         </div>
@@ -132,24 +180,92 @@
                 <div class="flex flex-col gap-2 px-5 w-[35%]">
                     <div class="flex justify-between text-sm">
                         <span>Sub Total</span>
-                        <span>$499.99</span>
+                        <span>${{number_format($product_data['sub_total'],2)}}</span>
                     </div>
                     <div class="flex justify-between text-sm">
                         <span>Discount</span>
-                        <span>$59.99</span>
+                        <span>${{number_format($product_data['discount'],2)}}</span>
                     </div>
                     <div class="flex justify-between text-sm">
                         <span>Taxable Amount</span>
-                        <span>$440.00</span>
+                        <span>$ {{number_format($product_data['sub_total'],2)}}</span>
                     </div>
                     <div class="flex justify-between text-sm">
                         <span>Tax Amount</span>
-                        <span>$59.99</span>
+                        <span>$ {{number_format(0,2)}}</span>
                     </div>
                     <div class="flex justify-between text-base font-semibold mt-3">
                         <span>Gross Total</span>
-                        <span>$499.99</span>
+                        <span>${{number_format($product_data['total'],2)}}</span>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="supplierModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add Supplier</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-24">
+                    <div class="row">
+                        <div class="col-6 mb-6">
+                            <label for="name" class="col-form-label">Name <span class="text-red-500">*</span></label>
+                            <input type="text" class="form-control" id="name" placeholder="Enter Supplier Name" wire:model="name">
+                            @error('name')
+                            <span class="text-red-500 text-xs">{{$message}}</span>
+                            @enderror
+                        </div>
+                        <div class="col-6 mb-6">
+                            <label for="phone" class="col-form-label">Phone <span class="text-red-500">*</span></label>
+                            <input type="number" class="form-control" id="phone" placeholder="Enter Phone Number" wire:model="phone">
+                            @error('phone')
+                            <span class="text-red-500 text-xs">{{$message}}</span>
+                            @enderror
+                        </div>
+                        <div class="col-6 mb-6">
+                            <label for="email" class="col-form-label">Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter Email Address" wire:model="email">
+                            @error('email')
+                            <span class="text-red-500 text-xs">{{$message}}</span>
+                            @enderror
+                        </div>
+                        <div class="col-6 mb-6">
+                            <label for="tax_number" class="col-form-label">Tax number</label>
+                            <input type="number" class="form-control" id="tax_number" placeholder="Enter Tax Number" wire:model="tax_number">
+                            @error('tax_number')
+                            <span class="text-red-500 text-xs">{{$message}}</span>
+                            @enderror
+                        </div>
+                        <div class="col-6 mb-6">
+                            <label for="opening_balance" class="col-form-label">Opening Balance</label>
+                            <input type="number" class="form-control" id="opening_balance" placeholder="Enter Opening Balance" wire:model="opening_balance">
+                            @error('opening_balance')
+                            <span class="text-red-500 text-xs">{{$message}}</span>
+                            @enderror
+                        </div>
+                        <div class="col-12 mb-6">
+                            <label for="address" class="col-form-label">Address</label>
+                            <textarea class="form-control resize-none" wire:model="address" rows="3" id="address" placeholder="Enter Address"></textarea>
+                            @error('address')
+                            <span class="text-red-500 text-xs">{{$message}}</span>
+                            @enderror
+                        </div>
+                        <div class="col-12 mt-6">
+                            <div class="form-switch switch-primary d-flex align-items-center gap-3">
+                                <input class="form-check-input" type="checkbox" role="switch" id="switch1" wire:model="is_active">
+                                <label class="form-check-label line-height-1 fw-medium text-secondary-light" for="switch1">Is Active?</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" wire:click.prevent="addSupplier">Add</button>
                 </div>
             </div>
         </div>

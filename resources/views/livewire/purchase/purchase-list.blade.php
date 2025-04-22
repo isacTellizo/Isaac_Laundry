@@ -8,7 +8,7 @@
                 <div class="flex justify-between gap-3 p-2">
                     <input type="text" class="form-control" placeholder="Search Here" wire:model.live="search">
                     <div>
-                        <a class="btn btn-success px-3 py-1 btn-sm text-xs" href="{{route('purchase.manage')}}" >Add Purchase</a>
+                        <a class="btn btn-success px-3 py-1 btn-sm text-xs" href="{{route('purchase.manage')}}">Add Purchase</a>
                     </div>
                 </div>
             </div>
@@ -16,38 +16,45 @@
                 <table class="table table-bordered text-center">
                     <thead>
                         <tr class="text-sm">
-                            <th style="width: 10px">#</th>
-                            <th>Supplier Name</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <th>Opening Balance</th>
-                            <th>Tax Number</th>
-                            <th>Address</th>
-                            <th>Status</th>
+                            <th>Purchase Info</th>
+                            <th>Supplier</th>
+                            <th>Total</th>
+                            <th>Created By</th>
                             <th style="width: 50px">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($purchases as $purchase )
+
                         <tr class="align-middle text-sm">
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
                             <td>
-                                
-                                <span class="text-green-500 text-sm rounded-2xl bg-green-200 px-2 py-1 font-semibold">Active</span>
-                                <span class="text-red-500 text-sm rounded-2xl bg-red-200 px-2 py-1 font-semibold">Inactive</span>
+                                <div class=" text-neutral-600 text-sm ">
+                                    Purchase No : <span class="font-medium text-sm">{{$purchase->purchase_number}}</span>
+                                </div>
+                                <div class=" text-neutral-600 text-sm ">
+                                    Purchase Date : <span class="font-medium text-sm">{{ $purchase->created_at->format('Y-m-d') }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <p>{{ $purchase->supplier->name }}</p>
+                                <p>{{ $purchase->supplier->tax_number ?? 'N/A' }}</p>
+                            </td>
+                            <td>${{ number_format($purchase->total, 2) }}</td>
+                            <td>@if ($purchase->created_by == 1 )
+                                <span>Admin</span>
+                                @else
+                                <span>N/A</span>
+                                @endif
                             </td>
                             <td>
                                 <div class="flex justify-between gap-2">
-                                    <button class="btn btn-dark btn-sm text-xs" data-bs-toggle="modal" data-bs-target="#supplierModal" wire:click="">Edit</button>
+                                    <a href="{{route('purchase.manage',$purchase->id)}}" class="btn btn-dark btn-sm text-xs" wire:click="">Edit</a>
                                     <button class="btn btn-danger btn-sm text-xs" wire:click="">Delete</button>
                                 </div>
                             </td>
                         </tr>
+                        @endforeach
+
                     </tbody>
                 </table>
             </div>

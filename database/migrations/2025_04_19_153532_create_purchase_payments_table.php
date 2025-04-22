@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('purchase_payments', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('purchase_id')->nullable();
+            $table->unsignedBigInteger('supplier_id');
+            $table->double('paid_amount', 20, 3);
+            $table->integer('payment_method');
+            $table->text('note')->nullable();
+            $table->text('payment_remarks')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamps();
         });
     }

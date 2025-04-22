@@ -19,6 +19,9 @@
                         <li class="nav-item"> <a href="{{route('inventory.products.list')}}" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
                                 <p>Products</p>
                             </a> </li>
+                        <li class="nav-item"> <a href="{{route('inventory.products-two')}}" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
+                                <p>Products Two</p>
+                            </a> </li>
                         <li class="nav-item"> <a href="{{route('categories.units.list')}}" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
                                 <p>Categories</p>
                             </a> </li>
@@ -33,6 +36,15 @@
                     <ul class="nav nav-treeview">
                         <li class="nav-item"> <a href="{{route('purchase.supplier.list')}}" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
                                 <p>Suppliers</p>
+                            </a> </li>
+                        <li class="nav-item"> <a href="{{route('purchase.suppliers-new')}}" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
+                                <p>Suppliers New</p>
+                            </a> </li>
+                        <li class="nav-item"> <a href="{{route('purchase.suppliers-two')}}" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
+                                <p>Suppliers Two</p>
+                            </a> </li>
+                        <li class="nav-item"> <a href="{{route('purchase.suppliers-three')}}" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
+                                <p>Suppliers Three</p>
                             </a> </li>
                         <li class="nav-item"> <a href="{{route('purchase.list')}}" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
                                 <p>Purchase</p>

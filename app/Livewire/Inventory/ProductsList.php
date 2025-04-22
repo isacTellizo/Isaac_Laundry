@@ -31,24 +31,30 @@ class ProductsList extends Component
         $this->description = '';
         $this->is_active = true;
         $this->is_consumable = true;
+        $this->product = null;
         $this->resetErrorBag();
     }
 
     public function save()
     {
-
-        $this->validate([
-            "name" => "required",
-            "unit_id" => "required",
-            "category_id" => "required",
-            "sku" => "required",
-            "purchase_price" => "required",
-        ]);
-
         if ($this->product) {
-             $product = $this->product;
-            
+            $this->validate([
+                "name" => "required",
+                "unit_id" => "required",
+                "category_id" => "required",
+                "sku" => "required|unique:products,sku," . $this->product->id,
+                "purchase_price" => "required",
+            ]);
+
+            $product = $this->product;
         } else {
+            $this->validate([
+                "name" => "required",
+                "unit_id" => "required",
+                "category_id" => "required",
+                "sku" => "required|unique:products,sku",
+                "purchase_price" => "required",
+            ]);
             $product = new Product();
         }
         $product->name = $this->name;
