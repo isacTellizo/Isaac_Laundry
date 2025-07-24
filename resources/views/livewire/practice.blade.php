@@ -1,6 +1,6 @@
 <div class="px-4 py-2">
 
-    <div class="flex gap-2 items-center">
+    <div class="flex gap-4 items-center">
         <input type="number" placeholder="Enter your Age" wire:model="age" class="rounded-lg px-2 py-1 border border-black outline-none">
         <button class="btn btn-primary" wire:click="checkAge">Submit</button>
         <div class="font-semibold text-lg @if ($age < 18) text-red-500  @endif text-blue-500">{{$message}}</div>
