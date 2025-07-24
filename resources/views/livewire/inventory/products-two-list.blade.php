@@ -10,6 +10,9 @@
                     <div>
                         <button class="btn btn-success !px-6 py-1 btn-sm !text-xs" data-bs-toggle="modal" data-bs-target="#productModal" wire:click="resetInputFields">Add Product</button>
                     </div>
+                    <div>
+                        <button class="btn btn-success !px-6 py-1 btn-sm !text-xs" wire:click="addProducts">Add Selected Products</button>
+                    </div>
                 </div>
             </div>
             <div class="card-body p-0">
@@ -31,7 +34,9 @@
                     <tbody>
                         @foreach ($products as $item )
                         <tr class="align-middle text-sm">
-                            <td>{{$loop->index+1}}</td>
+                            <td>
+                                <input type="checkbox" class="form_control" wire:model="selectedProducts" value="{{$item->id}}">
+                            </td>
                             <td>{{$item->name}}</td>
                             <td>{{$item->unit?->short_form}}</td>
                             <td>{{$item->category?->name}}</td>
@@ -56,6 +61,80 @@
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+            <div class="flex flex-col gap-2 mt-16">
+                <div>
+                    <section class="py-24 relative">
+                        <div class="w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto">
+
+                            <h2 class="title font-manrope font-bold text-sm leading-6 mb-6 text-center text-black">
+                                Shopping Cart
+                            </h2>
+
+                            <div class="hidden lg:grid grid-cols-2 py-4">
+                                <div class="font-normal text-sm leading-6 text-gray-500">
+                                    Product
+                                </div>
+                                <p class="font-normal text-sm leading-6 text-gray-500 flex items-center justify-between">
+                                    <span class="w-full max-w-[200px] text-center">Delivery Charge</span>
+                                    <span class="w-full max-w-[260px] text-center">Quantity</span>
+                                    <span class="w-full max-w-[200px] text-center">Total</span>
+                                </p>
+                            </div>
+
+                            <!-- Example Cart Item -->
+                            <div class="grid grid-cols-2 py-4 border-t border-b border-gray-200">
+                                @foreach ($selectedProducts as $item )
+                                    
+                                <div class="flex items-center gap-4">
+                                    <img src="your-image.jpg" alt="Product Image" class="w-16 h-16 object-cover rounded" />
+                                    <div>
+                                        <h5 class="font-semibold text-sm leading-6 text-black max-[550px]:text-center">
+                                            {{$item['name']}}
+                                        </h5>
+                                        <p class="font-normal text-xs leading-5 text-gray-500 my-1 min-[550px]:my-2 max-[550px]:text-center">
+                                            {{$item['quantity']}}
+                                        </p>
+                                        <h6 class="font-medium text-xs leading-5 text-indigo-600 max-[550px]:text-center">
+                                            {{$item['rate']}}
+                                        </h6>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+
+                            <!-- Add more cart items the same way -->
+
+                            <!-- Cart Summary -->
+                            <div class="mt-8 border-t border-gray-200 pt-6">
+                                <div class="flex justify-between mb-4">
+                                    <span class="font-normal text-sm text-gray-500">Subtotal</span>
+                                    <span class="font-medium text-sm text-black">$240.00</span>
+                                </div>
+                                <div class="flex justify-between mb-4">
+                                    <span class="font-normal text-sm text-gray-500">Delivery Charge</span>
+                                    <span class="font-medium text-sm text-black">Free</span>
+                                </div>
+                                <div class="flex justify-between mb-4">
+                                    <span class="font-normal text-sm text-gray-500">Discount</span>
+                                    <span class="font-medium text-sm text-black">-$20.00</span>
+                                </div>
+                                <div class="flex justify-between border-t border-gray-300 pt-4">
+                                    <span class="font-bold text-sm text-black">Total</span>
+                                    <span class="font-bold text-sm text-black">$220.00</span>
+                                </div>
+                            </div>
+
+                            <div class="mt-6">
+                                <button class="w-full bg-indigo-600 text-white text-sm py-3 rounded-lg hover:bg-indigo-700 transition">
+                                    Proceed to Checkout
+                                </button>
+                            </div>
+
+                        </div>
+                    </section>
+
+                </div>
             </div> <!-- /.card-body -->
         </div> <!-- /.card -->
     </div> <!-- /.col -->
@@ -82,7 +161,7 @@
                             <select type="text" class="form-control" id="unit_id" wire:model='unit_id' placeholder="Enter Supplier  Name">
                                 <option value="">Select Unit</option>
                                 @foreach ($units as $unit )
-                                    <option value="{{$unit->id}}">{{$unit->name}}</option>
+                                <option value="{{$unit->id}}">{{$unit->name}}</option>
                                 @endforeach
                             </select>
                             @error('unit_id')
@@ -94,7 +173,7 @@
                             <select type="text" class="form-control" id="category_id" wire:model='category_id' placeholder="Enter Supplier  Name">
                                 <option value="">Select Category</option>
                                 @foreach ($categories as $category )
-                                    <option value="{{$category->id}}">{{$category->name}}</option>
+                                <option value="{{$category->id}}">{{$category->name}}</option>
                                 @endforeach
                             </select>
                             @error('category_id')
@@ -121,7 +200,7 @@
                             @error('opening_stock')
                             <span class="text-red-500 text-xs">{{$message}}</span>
                             @enderror
-                        </div>                        
+                        </div>
                         <div class="col-12 mb-6">
                             <label for="description" class="col-form-label">Description</label>
                             <textarea class="form-control !resize-none" rows="3" id="description" wire:model="description" placeholder="Enter Description"></textarea>

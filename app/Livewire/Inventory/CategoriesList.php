@@ -12,10 +12,11 @@ class CategoriesList extends Component
     public function render()
     {
         $query = Category::latest();
-        if ($this->search != '') {
-            $query->where(function ($q) {
-                $q->where('name', 'like', '%' . $this->search . '%')
-                    ->orWhere('short_form', 'like', '%' . $this->search . '%');
+        $search = $this->search . 'Hello';
+        if ($search != '') {
+            $query->where(function ($q) use ($search){
+                $q->where('name', 'like', '%' . $search  . '%')
+                    ->orWhere('short_form', 'like', '%' . $search . '%');
             });
         }
         $this->categories = $query->get();

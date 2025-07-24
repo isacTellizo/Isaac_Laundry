@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Inventory;
 
+use App\Models\Category;
 use App\Models\CategoryNew;
 use Livewire\Component;
 
@@ -11,7 +12,8 @@ class Categories extends Component
     public $categories, $category;
     public function render()
     {
-        $this->categories = CategoryNew::latest()->get();
+        $this->categories = Category::get();
+         
         return view('livewire.inventory.categories');
     }
     public function resetInputFields()
@@ -28,11 +30,10 @@ class Categories extends Component
         $this->validate([
             "name" => "required",
         ]);
+        $category = new Category();
         if ($this->category) {
             $category = $this->category;
-        } else {
-            $category = new CategoryNew();
-        }
+        } 
         $category->name = $this->name;
         $category->description = $this->description;
         $category->is_active = $this->is_active;
@@ -49,7 +50,7 @@ class Categories extends Component
     public function delete($id)
     {
         $this->category = null;
-        $category = CategoryNew::whereId($id)->first();
+        $category = Category::whereId($id)->first();
         if (!$category) {
             return;
         }
@@ -63,7 +64,7 @@ class Categories extends Component
 
     public function edit($id)
     {
-        $this->category = CategoryNew::whereId($id)->first();
+        $this->category = Category::whereId($id)->first();
         $this->name = $this->category->name;
         $this->description = $this->category->description;
         $this->is_active = $this->category->is_active == 1 ? true : false;

@@ -14,7 +14,9 @@ class SupplierList extends Component
         $this->suppliers = Supplier::latest()->get();
         return view('livewire.purchase.supplier-list');
     }
+    public function mount($name = null){
 
+    }
     public function resetInputFields()
     {
         $this->name = '';

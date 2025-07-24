@@ -9,17 +9,37 @@ use Livewire\Component;
 
 class ProductsTwoList extends Component
 {
-    public $name, $unit_id, $category_id, $sku, $purchase_price, $opening_stock, $description, $is_active = true;
-    public $product,$products,$categories,$units;
+    public $name, $unit_id, $category_id, $sku, $purchase_price, $opening_stock, $description, $is_active = true, $search = '';
+    public $product, $products, $categories, $units, $selectedProducts = [], $cartItems = [];
     public function render()
     {
         $this->units = Unit::latest()->get();
         $this->categories = Category::latest()->get();
-        $this->products = ProductTwo::latest()->get();
+        $query = ProductTwo::latest();
+        if ($this->search != '') {
+            $query->where(function ($q) {
+                $q->where('name', 'like', '%' . $this->search)
+                    ->orWhere('sku', 'like', '%' . $this->search . '%');
+            });
+        }
+
+        $this->products = $query->get();
         return view('livewire.inventory.products-two-list');
     }
 
-    public function resetInputFields(){
+    public function addProducts() {
+        $item = ProductTwo::whereId($this->selectedProducts)->get();
+        $cartItem = [
+            "name" => $this->selectedProducts['name'],
+            "quantity" => 1,
+            "rate" => $this->selectedProducts['purchase_price'],
+        ];
+
+        array_push($this->cartItems,$cartItem);
+    }
+
+    public function resetInputFields()
+    {
         $this->name = '';
         $this->unit_id = '';
         $this->category_id = '';
@@ -37,13 +57,13 @@ class ProductsTwoList extends Component
             "name" => "required",
             "unit_id" => "required",
             "category_id" => "required",
-            "sku" => "required|unique:product_twos,sku,".($this->product->id ?? ''),
+            "sku" => "required|unique:product_twos,sku," . ($this->product->id ?? ''),
             "purchase_price" => "nullable|numeric|min:0",
             "opening_stock" => "nullable|numeric|min:0",
         ]);
 
         $product = new ProductTwo();
-        if($this->product){
+        if ($this->product) {
             $product = $this->product;
         }
         $product->name = $this->name;
@@ -64,10 +84,11 @@ class ProductsTwoList extends Component
         $this->dispatch('closemodal');
     }
 
-    public function delete($id){
+    public function delete($id)
+    {
         $this->product = null;
         $product = ProductTwo::whereId($id)->first();
-        if(!$product){
+        if (!$product) {
             return;
         }
         $product->delete();
@@ -78,7 +99,8 @@ class ProductsTwoList extends Component
         ]);
     }
 
-    public function edit($id){
+    public function edit($id)
+    {
         $this->product = ProductTwo::whereId($id)->first();
         $this->name = $this->product->name;
         $this->unit_id = $this->product->unit_id;
